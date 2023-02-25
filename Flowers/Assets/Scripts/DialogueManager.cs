@@ -21,13 +21,9 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] float recallSpeed;
     [SerializeField] AnimationCurve recallCurve;
 
-    private void Start()
-    {
-        
-    }
-
     private void Update()
     {
+        // Testing 
         if(Input.GetKeyDown(KeyCode.Space))
         {
             SummonFallingDialogue("Test", this.transform, 2.0f);
@@ -128,6 +124,101 @@ public class DialogueManager : MonoBehaviour
 
         // Destory once offscreen
         Destroy(sign.gameObject);
+    }
+
+    [System.Serializable]
+    private class PublicDialogue
+    {
+        [SerializeField] public List<string> publicPool;
+
+        // Text that changes based on the day 
+        [Header("Day specific")]
+        [SerializeField] public List<string> monday;
+        [SerializeField] public List<string> tuesday;
+        [SerializeField] public List<string> wednesday;
+        [SerializeField] public List<string> thursday;
+        [SerializeField] public List<string> friday;
+        [SerializeField] public List<string> saturday;
+        [SerializeField] public List<string> valentinesDay;
+
+        public enum Days
+        {
+            monday,
+            tuesday,
+            wednesday,
+            thursday,
+            friday,
+            saturday,
+            valentinesDay
+        }
+
+        // Text that changes based on types of bouquets 
+        [Header("Bouquet Specific")]
+        [SerializeField] public List<string> exoticBouquet;
+        [SerializeField] public List<string> uniformBouquet;
+        [SerializeField] public List<string> commonBouquet;
+
+        public enum BouquetTypes
+        {
+            exotic,
+            uniform,
+            common
+        }
+
+
+        public List<string> GetPool(Days currentDay, List<BouquetTypes> bouquets)
+        {
+            List<string> pool = new List<string>(publicPool);
+
+            // Picks a day 
+            switch (currentDay)
+            {
+                case Days.monday:
+                    pool.AddRange(monday);
+                    break;
+                case Days.tuesday:
+                    pool.AddRange(tuesday);
+                    break;
+                case Days.wednesday:
+                    pool.AddRange(wednesday);
+                    break;
+                case Days.thursday:
+                    pool.AddRange(thursday);
+                    break;
+                case Days.friday:
+                    pool.AddRange(friday);
+                    break;
+                case Days.saturday:
+                    pool.AddRange(saturday);
+                    break;
+                case Days.valentinesDay:
+                    pool.AddRange(valentinesDay);
+                    break;
+            }
+
+            // Adds bouquet specific dialogue 
+            for (int i = 0; i < bouquets.Count; i++)
+            {
+                // Bouquets that are more common within the 
+                // the list are added multiple time making 
+                // it more common for it to appear as a dialogue 
+
+                switch (bouquets[i])
+                {
+                    case BouquetTypes.exotic:
+                        pool.AddRange(exoticBouquet);
+                        break;
+                    case BouquetTypes.uniform:
+                        pool.AddRange(uniformBouquet);
+                        break;
+                    case BouquetTypes.common:
+                        pool.AddRange(commonBouquet);
+                        break;
+                }
+            }
+
+            return pool;
+        }
     }
 
 

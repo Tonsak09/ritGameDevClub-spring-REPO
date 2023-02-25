@@ -47,8 +47,6 @@ public class Passerby : MonoBehaviour
 
             yield return null;
         }
-
-        
     }
 
 
