@@ -5,7 +5,7 @@ using UnityEngine;
 public class FlowerSelection : MonoBehaviour
 {
     public Vector3 bouquetPosition; //starting point of the first bouquet
-    public float bouquetDis, flowerDis;
+    public float flowerDis;
 
     //storing all clicked flowers into a obj list
     public List<GameObject> flowerSelection;
@@ -15,40 +15,49 @@ public class FlowerSelection : MonoBehaviour
     public List<GameObject> bouquetTwo;
     public List<GameObject> bouquetThree;
 
-    public GameObject table;
-
+    public bool movedown = false, moveup = false;
     [SerializeField] private Material selMaterial;
     int count = 1;
     Vector3 tempPos;
+
+    public bool moveDown
+    {
+        get { return movedown; }
+        set { movedown = value; }
+    }
+    public bool moveUp
+    {
+        get { return moveUp; }
+        set { moveUp = value; }
+    }
+    void Start()
+    {
+    }
     void Update()
     {
         //flower is on layer 6
         int layerMask = 1 << 6;
-
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, layerMask)) {
             if (Input.GetButtonDown("Fire1")) {
                 print("Flower is detected");
-
                 //adding to the list
                 flowerSelection.Add(hit.collider.gameObject);
-
                 //highlighting the object idk(for visuals????)
                 var selection = hit.transform;
                 var selRender = selection.GetComponent<Renderer>(); 
-                if(selection != null) {
+                if(selection != null&&selRender.tag=="flower") {
                     selRender.material = selMaterial; 
                 }
             }
         }
         //spawning the bouquets in a row after selection
-        //
+        //transitising from picking->wrapping->ribbon between each bouquet
         if (flowerSelection.Count >= bouquetFlowerAmount) {
             switch (count) {
                 case 1:
                     for(int a = 0; a< flowerSelection.Count; a++) { bouquetOne.Add(flowerSelection[a].gameObject); }
-                    flowerSelection.Clear();
                     bouquetOne[0].transform.position = bouquetPosition;
                     tempPos = bouquetPosition;
                     //the first flower will be nudged a bit to the right
@@ -56,19 +65,10 @@ public class FlowerSelection : MonoBehaviour
                         flower.transform.position = new Vector3(tempPos.x + flowerDis, tempPos.y, tempPos.z);
                         tempPos = flower.transform.position;
                     }
-                    //wrapping process
-                    table.gameObject.SetActive(true);
-
-                    table.gameObject.SetActive(false);
-                    //ribbon process
-                    table.gameObject.SetActive(true);
-
-                    table.gameObject.SetActive(false);
                     break;
                 case 2:
                     for (int a = 0; a < flowerSelection.Count; a++) { bouquetTwo.Add(flowerSelection[a].gameObject); }
-                    flowerSelection.Clear();
-                    bouquetTwo[0].transform.position = new Vector3(bouquetPosition.x + bouquetDis, bouquetPosition.y, bouquetPosition.z);
+                    bouquetTwo[0].transform.position = bouquetPosition;
                     tempPos = bouquetTwo[0].transform.position;
                     //the first flower will be nudged a bit to the right
                     foreach (var flower in bouquetTwo)
@@ -79,8 +79,7 @@ public class FlowerSelection : MonoBehaviour
                     break;
                 case 3:
                     for (int a = 0; a < flowerSelection.Count; a++) { bouquetThree.Add(flowerSelection[a].gameObject); }
-                    flowerSelection.Clear();
-                    bouquetThree[0].transform.position = new Vector3(bouquetPosition.x + 2*bouquetDis, bouquetPosition.y, bouquetPosition.z);
+                    bouquetThree[0].transform.position = bouquetPosition;
                     tempPos = bouquetThree[0].transform.position;
                     //the first flower will be nudged a bit to the right
                     foreach (var flower in bouquetThree)
@@ -90,6 +89,8 @@ public class FlowerSelection : MonoBehaviour
                     }
                     break;
             } count++;
+            flowerSelection.Clear();
+            movedown = true;
         }
     }
 }
