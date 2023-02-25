@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TableMovement : MonoBehaviour
+public class Wrap_RibMovement : MonoBehaviour
 {
-    [SerializeField] [Range(0f, 4f)] float lerpTime;
+    [SerializeField][Range(0f, 4f)] float lerpTime;
     [SerializeField] Vector3 end, start;
+
+    //the ref and the timer
     public FlowerSelection flower;
     float time;
     // Start is called before the first frame update
@@ -20,17 +22,17 @@ public class TableMovement : MonoBehaviour
     }
     void move()
     {
-        if (flower.movedown)
+        if (flower.wrapleft && transform.position != end)
         {
             transform.position = Vector3.Lerp(transform.position, end, lerpTime * Time.deltaTime);
             time += Time.deltaTime;
         }
-        if (time > 2) { flower.movedown = false; time = 0; }
-        if (flower.moveup)
+        if (time > 3) { flower.wrapleft = false; time = 0; }
+        if (flower.wrapright && transform.position != start)
         {
             transform.position = Vector3.Lerp(transform.position, start, lerpTime * Time.deltaTime);
             time += Time.deltaTime;
         }
-        if (time > 2) { flower.moveup = false; time = 0; }
+        if (time > 3) { flower.wrapright = false; time = 0; }
     }
 }

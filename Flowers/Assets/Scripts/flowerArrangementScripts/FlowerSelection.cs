@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+//the most unorganized script...
 public class FlowerSelection : MonoBehaviour
 {
     public Vector3 bouquetPosition; //starting point of the first bouquet
@@ -15,53 +15,93 @@ public class FlowerSelection : MonoBehaviour
     public List<GameObject> bouquetTwo;
     public List<GameObject> bouquetThree;
 
-    public bool movedown = false, moveup = false;
+    public bool tabmovedown = false, tabmoveup = false;
+    public bool boumovedown = false, boumoveup = false; //doing this later
+    public bool wrapleft = false, wrapright = false;
+
+    public LayerMask flowerMask, wrapperMask;
+
     [SerializeField] private Material selMaterial;
     int count = 1;
     Vector3 tempPos;
 
-    public bool moveDown
+    //get set stuff
+    public bool tmoveDown
     {
-        get { return movedown; }
-        set { movedown = value; }
+        get { return tabmovedown; }
+        set { tabmovedown = value; }
     }
-    public bool moveUp
+    public bool tmoveUp
     {
-        get { return moveUp; }
-        set { moveUp = value; }
+        get { return tabmoveup; }
+        set { tabmoveup = value; }
     }
-    void Start()
+    public bool bmoveDown
     {
+        get { return boumovedown; }
+        set { boumovedown = value; }
+    }
+    public bool bmoveUp
+    {
+        get { return boumoveup; }
+        set { boumoveup = value; }
     }
     void Update()
     {
-        //flower is on layer 6
-        int layerMask = 1 << 6;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, layerMask)) {
-            if (Input.GetButtonDown("Fire1")) {
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (Physics.Raycast(ray, out hit, flowerMask))
+            {
                 print("Flower is detected");
                 //adding to the list
                 flowerSelection.Add(hit.collider.gameObject);
                 //highlighting the object idk(for visuals????)
                 var selection = hit.transform;
-                var selRender = selection.GetComponent<Renderer>(); 
-                if(selection != null&&selRender.tag=="flower") {
-                    selRender.material = selMaterial; 
+                var selRender = selection.GetComponent<Renderer>();
+                if (selection != null && selRender.tag == "flower")
+                {
+                    selRender.material = selMaterial;
                 }
             }
+            if (Physics.Raycast(ray, out hit, wrapperMask))
+            {
+                //ONLY ONE WRAPPER CAN BE SELECTED
+                print("Wrapper is detected");
+                //highlighting the object idk(for visuals????)
+                var selection = hit.transform;
+                var selRender = selection.GetComponent<Renderer>();
+                if (selection != null && selRender.tag == "wrapper")
+                {
+                    selRender.material = selMaterial;
+                }
+                //wrapright = true;
+            }
         }
-        //spawning the bouquets in a row after selection
         //transitising from picking->wrapping->ribbon between each bouquet
-        if (flowerSelection.Count >= bouquetFlowerAmount) {
-            switch (count) {
+            flowerPick();
+
+    }
+    void wrapperPick()
+    {
+        wrapleft = true;
+    }
+        //spawning the bouquets in a row after selection
+    void flowerPick()
+    {
+        if (flowerSelection.Count >= bouquetFlowerAmount)
+        {
+            switch (count)
+            {
                 case 1:
-                    for(int a = 0; a< flowerSelection.Count; a++) { bouquetOne.Add(flowerSelection[a].gameObject); }
+                    for (int a = 0; a < flowerSelection.Count; a++) { bouquetOne.Add(flowerSelection[a].gameObject); }
                     bouquetOne[0].transform.position = bouquetPosition;
                     tempPos = bouquetPosition;
                     //the first flower will be nudged a bit to the right
-                    foreach (var flower in bouquetOne) {
+                    foreach (var flower in bouquetOne)
+                    {
                         flower.transform.position = new Vector3(tempPos.x + flowerDis, tempPos.y, tempPos.z);
                         tempPos = flower.transform.position;
                     }
@@ -88,9 +128,16 @@ public class FlowerSelection : MonoBehaviour
                         tempPos = flower.transform.position;
                     }
                     break;
-            } count++;
+            }
+            count++;
             flowerSelection.Clear();
-            movedown = true;
+            tabmovedown = true;
+            //once the bouquets flowers are selected, its time for the wrapping
+            wrapperPick();
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawRay(Camera.main.ScreenPointToRay(Input.mousePosition));
     }
 }
