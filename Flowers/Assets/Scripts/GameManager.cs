@@ -2,21 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManger : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
+    [SerializeField] GameStates gameState;
+    [SerializeField] Days day;
 
-    [SerializeField] gameStates gameState;
-    private enum gameStates
+    public GameStates State { get { return gameState; } }
+    public Days CurrentDay {  get { return day; } }
+
+    private int currentDay;
+
+    public enum GameStates
     {
         morning,
         afternoon,
         evening
     }
 
-    [SerializeField] CrowdSettings crowdSettings;
-
-
-    private int currentDay;
+    public enum Days
+    {
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday,
+        saturday,
+        valentinesDay
+    }
 
     private void Start()
     {
@@ -27,12 +39,13 @@ public class GameManger : MonoBehaviour
     {
         Coroutine currentCo = null;
 
+        // Repeats for each day of week 
         while(currentDay < 7)
         {
-
+            // Swaps based on day 
             switch (gameState)
             {
-                case gameStates.morning:
+                case GameStates.morning:
 
                     if(currentCo == null)
                     {
@@ -40,7 +53,7 @@ public class GameManger : MonoBehaviour
                     }
 
                     break;
-                case gameStates.afternoon:
+                case GameStates.afternoon:
 
                     if (currentCo == null)
                     {
@@ -48,7 +61,7 @@ public class GameManger : MonoBehaviour
                     }
 
                     break;
-                case gameStates.evening:
+                case GameStates.evening:
 
                     if (currentCo == null)
                     {
@@ -58,10 +71,13 @@ public class GameManger : MonoBehaviour
                     break;
             }
 
+            // End day
+
             yield return null;
         }
 
-        
+
+        // End scene 
     }
 
     /// <summary>
@@ -71,7 +87,7 @@ public class GameManger : MonoBehaviour
     {
         // Transition into the shop 
 
-        while (gameState == gameStates.morning)
+        while (gameState == GameStates.morning)
         {
             // Raycast choose 5 flowers per bouquet 
 
@@ -91,7 +107,7 @@ public class GameManger : MonoBehaviour
     {
         // Transition out of the shop 
 
-        while (gameState == gameStates.afternoon)
+        while (gameState == GameStates.afternoon)
         {
 
             // Allow player to move bouqets around and
@@ -112,7 +128,7 @@ public class GameManger : MonoBehaviour
     {
         // Transition into the house for dialogue 
 
-        while (gameState == gameStates.evening)
+        while (gameState == GameStates.evening)
         {
 
             yield return null;
@@ -123,61 +139,5 @@ public class GameManger : MonoBehaviour
         // Cleanup
         currentCo = null;
         StopCoroutine(currentCo);
-    }
-
-
-    [System.Serializable]
-    private class CrowdSettings
-    {
-        [SerializeField] public GameObject entity;
-        [SerializeField] public int morningDensity;
-        [SerializeField] public int afternoonDensity;
-        [SerializeField] public int eveningDensity;
-        [SerializeField] public List<Vector3> passerbySpawnPositions;
-
-        private List<Passerby> entities;
-        private int crowdDensity;
-
-
-        /// <summary>
-        /// Destroys all passerbies and sets up
-        /// the next entity pool 
-        /// </summary>
-        /// <param name="state"></param>
-        public void ResetCrowd(gameStates state)
-        {
-            // Clears the previous pool 
-            while(entities.Count > 0)
-            {
-                Destroy(entities[0].gameObject);
-                entities.RemoveAt(0);
-            }
-
-            switch (state)
-            {
-                case gameStates.morning:
-                    GenerateEntityPool(morningDensity);
-                    break;
-                case gameStates.afternoon:
-                    GenerateEntityPool(afternoonDensity);
-                    break;
-                case gameStates.evening:
-                    GenerateEntityPool(eveningDensity);
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Creates a new pool based on the density 
-        /// </summary>
-        /// <param name="count"></param>
-        public void GenerateEntityPool(int count)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                // Change the position to spawn eventually
-                entities.Add(Instantiate(entity, passerbySpawnPositions[0], Quaternion.identity).GetComponent<Passerby>());
-            }
-        }
     }
 }

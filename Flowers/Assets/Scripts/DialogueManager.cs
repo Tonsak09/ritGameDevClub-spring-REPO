@@ -5,7 +5,7 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
-    [Header("General Settings")]
+    [Header("Spawning Settings")]
     [SerializeField] GameObject dialogueSign;
     [SerializeField] float ySummonHeight;
     [SerializeField] float ySummonerOffset;
@@ -21,13 +21,26 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] float recallSpeed;
     [SerializeField] AnimationCurve recallCurve;
 
+    [Header("Dialogue")]
+    [SerializeField] PublicDialogue publicDialogue;
+
+
+    public PublicDialogue PublicDialogueDetails { get { return publicDialogue; } }
+
+    public enum BouquetTypes
+    {
+        exotic,
+        uniform,
+        common
+    }
+
     private void Update()
     {
-        // Testing 
+        /*// Testing 
         if(Input.GetKeyDown(KeyCode.Space))
         {
             SummonFallingDialogue("Test", this.transform, 2.0f);
-        }
+        }*/
     }
 
 
@@ -113,9 +126,9 @@ public class DialogueManager : MonoBehaviour
             // Recal Sign
 
             sign.position = new Vector3(
-                summoner.position.x,
+                sign.position.x,
                 Mathf.LerpUnclamped(heightTarget, ySummonHeight, recallCurve.Evaluate(lerp)),
-                summoner.position.z
+                sign.position.z
                 );
 
             lerp += Time.deltaTime * recallSpeed;
@@ -127,9 +140,9 @@ public class DialogueManager : MonoBehaviour
     }
 
     [System.Serializable]
-    private class PublicDialogue
+    public class PublicDialogue
     {
-        [SerializeField] public List<string> publicPool;
+        [SerializeField] public List<string> publicPool = new List<string>();
 
         // Text that changes based on the day 
         [Header("Day specific")]
@@ -141,16 +154,6 @@ public class DialogueManager : MonoBehaviour
         [SerializeField] public List<string> saturday;
         [SerializeField] public List<string> valentinesDay;
 
-        public enum Days
-        {
-            monday,
-            tuesday,
-            wednesday,
-            thursday,
-            friday,
-            saturday,
-            valentinesDay
-        }
 
         // Text that changes based on types of bouquets 
         [Header("Bouquet Specific")]
@@ -158,40 +161,41 @@ public class DialogueManager : MonoBehaviour
         [SerializeField] public List<string> uniformBouquet;
         [SerializeField] public List<string> commonBouquet;
 
-        public enum BouquetTypes
-        {
-            exotic,
-            uniform,
-            common
-        }
+        
 
-
-        public List<string> GetPool(Days currentDay, List<BouquetTypes> bouquets)
+        /// <summary>
+        /// Gets the pool of dialogue entities can choose from based 
+        /// on the different considitions of the game 
+        /// </summary>
+        /// <param name="currentDay"></param>
+        /// <param name="bouquets"></param>
+        /// <returns></returns>
+        public List<string> GetPool(GameManager.Days currentDay, List<BouquetTypes> bouquets)
         {
             List<string> pool = new List<string>(publicPool);
 
             // Picks a day 
             switch (currentDay)
             {
-                case Days.monday:
+                case GameManager.Days.monday:
                     pool.AddRange(monday);
                     break;
-                case Days.tuesday:
+                case GameManager.Days.tuesday:
                     pool.AddRange(tuesday);
                     break;
-                case Days.wednesday:
+                case GameManager.Days.wednesday:
                     pool.AddRange(wednesday);
                     break;
-                case Days.thursday:
+                case GameManager.Days.thursday:
                     pool.AddRange(thursday);
                     break;
-                case Days.friday:
+                case GameManager.Days.friday:
                     pool.AddRange(friday);
                     break;
-                case Days.saturday:
+                case GameManager.Days.saturday:
                     pool.AddRange(saturday);
                     break;
-                case Days.valentinesDay:
+                case GameManager.Days.valentinesDay:
                     pool.AddRange(valentinesDay);
                     break;
             }
@@ -213,6 +217,8 @@ public class DialogueManager : MonoBehaviour
                         break;
                     case BouquetTypes.common:
                         pool.AddRange(commonBouquet);
+                        break;
+                    default:
                         break;
                 }
             }
