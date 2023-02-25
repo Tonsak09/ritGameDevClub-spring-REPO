@@ -129,10 +129,55 @@ public class GameManger : MonoBehaviour
     [System.Serializable]
     private class CrowdSettings
     {
-        [SerializeField] int morningDensity;
-        [SerializeField] int afternoonDensity;
-        [SerializeField] int eveningDensity;
+        [SerializeField] public GameObject entity;
+        [SerializeField] public int morningDensity;
+        [SerializeField] public int afternoonDensity;
+        [SerializeField] public int eveningDensity;
+        [SerializeField] public List<Vector3> passerbySpawnPositions;
 
+        private List<Passerby> entities;
         private int crowdDensity;
+
+
+        /// <summary>
+        /// Destroys all passerbies and sets up
+        /// the next entity pool 
+        /// </summary>
+        /// <param name="state"></param>
+        public void ResetCrowd(gameStates state)
+        {
+            // Clears the previous pool 
+            while(entities.Count > 0)
+            {
+                Destroy(entities[0].gameObject);
+                entities.RemoveAt(0);
+            }
+
+            switch (state)
+            {
+                case gameStates.morning:
+                    GenerateEntityPool(morningDensity);
+                    break;
+                case gameStates.afternoon:
+                    GenerateEntityPool(afternoonDensity);
+                    break;
+                case gameStates.evening:
+                    GenerateEntityPool(eveningDensity);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Creates a new pool based on the density 
+        /// </summary>
+        /// <param name="count"></param>
+        public void GenerateEntityPool(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                // Change the position to spawn eventually
+                entities.Add(Instantiate(entity, passerbySpawnPositions[0], Quaternion.identity).GetComponent<Passerby>());
+            }
+        }
     }
 }
