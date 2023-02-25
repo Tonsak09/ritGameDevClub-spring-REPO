@@ -34,17 +34,23 @@ public class CrowdManager : MonoBehaviour
         dialogueManager = this.GetComponent<DialogueManager>();
 
         entities = new List<Passerby>();
-
-        ResetCrowd(gameManager.State);
     }
 
-    private void Update()
+    /// <summary>
+    /// Returns if all entities have reached their destination 
+    /// </summary>
+    /// <returns></returns>
+    public bool IsFinished()
     {
-        // Test for spawning entities 
-        /*if (Input.GetKeyDown(KeyCode.Space))
+        for (int i = 0; i < entities.Count; i++)
         {
-            ResetCrowd(gameManager.State);
-        }*/
+            if (!entities[i].ReachedDestination)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /// <summary>

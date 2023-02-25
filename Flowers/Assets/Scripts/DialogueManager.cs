@@ -24,7 +24,6 @@ public class DialogueManager : MonoBehaviour
     [Header("Dialogue")]
     [SerializeField] PublicDialogue publicDialogue;
 
-
     public PublicDialogue PublicDialogueDetails { get { return publicDialogue; } }
 
     public enum BouquetTypes

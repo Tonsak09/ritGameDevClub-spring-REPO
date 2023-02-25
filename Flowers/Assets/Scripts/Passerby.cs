@@ -10,6 +10,10 @@ public class Passerby : MonoBehaviour
     private DialogueManager dialogueManager;
     private Stack<Coroutine> coroutines;
 
+    private bool reachedDestination;
+
+    public bool ReachedDestination { get { return reachedDestination; } }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -74,6 +78,8 @@ public class Passerby : MonoBehaviour
             bobTimer += Time.deltaTime;
             yield return null;
         }
+
+        reachedDestination = true;
     }
 
     /// <summary>

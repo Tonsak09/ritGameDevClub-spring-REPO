@@ -7,10 +7,22 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameStates gameState;
     [SerializeField] Days day;
 
+    [Header("Transition Settings")]
+    [SerializeField] List<TransitionPart> transitionals;
+    [Tooltip("This camera is used on the outside of the shop")]
+    [SerializeField] GameObject outCam;
+    [Tooltip("This camera is used on the insdie of the shop")]
+    [SerializeField] GameObject inCam;
+
     public GameStates State { get { return gameState; } }
     public Days CurrentDay {  get { return day; } }
 
+    private CrowdManager crowdManager;
+
+    private Coroutine currentCo = null;
+
     private int currentDay;
+    private bool isOut; // whether in or out of shop
 
     public enum GameStates
     {
@@ -32,12 +44,45 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        isOut = true;
+
+        crowdManager = this.GetComponent<CrowdManager>();
+
         StartCoroutine(StateMachine());
+    }
+
+    private void Update()
+    {
+        /*if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Transition();
+        }*/
+    }
+
+    private void Transition()
+    {
+        for (int i = 0; i < transitionals.Count; i++)
+        {
+            transitionals[i].TryTransition();
+        }
+
+        // Transition the camera 
+        if(isOut)
+        {
+            inCam.SetActive(true);
+            outCam.SetActive(false);
+        }
+        else
+        {
+            outCam.SetActive(true);
+            inCam.SetActive(false);
+        }
+
+        isOut = !isOut;
     }
 
     private IEnumerator StateMachine()
     {
-        Coroutine currentCo = null;
 
         // Repeats for each day of week 
         while(currentDay < 7)
@@ -49,7 +94,7 @@ public class GameManager : MonoBehaviour
 
                     if(currentCo == null)
                     {
-                        currentCo = StartCoroutine(MorningState(currentCo));
+                        currentCo = StartCoroutine(MorningState());
                     }
 
                     break;
@@ -57,7 +102,7 @@ public class GameManager : MonoBehaviour
 
                     if (currentCo == null)
                     {
-                        currentCo = StartCoroutine(AfternoonState(currentCo));
+                        currentCo = StartCoroutine(AfternoonState());
                     }
 
                     break;
@@ -65,7 +110,7 @@ public class GameManager : MonoBehaviour
 
                     if (currentCo == null)
                     {
-                        currentCo = StartCoroutine(EveningState(currentCo));
+                        currentCo = StartCoroutine(EveningState());
                     }
 
                     break;
@@ -83,53 +128,66 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// The player creates bouquets of flowers for the day  
     /// </summary>
-    private IEnumerator MorningState(Coroutine currentCo)
+    private IEnumerator MorningState()
     {
         // Transition into the shop 
+        yield return new WaitForSeconds(1);
+        Transition();
 
         while (gameState == GameStates.morning)
         {
             // Raycast choose 5 flowers per bouquet 
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                gameState = GameStates.afternoon;
+            }
 
             yield return null;
         }
 
         // Cleanup
         currentCo = null;
-        StopCoroutine(currentCo);
     }
 
     /// <summary>
     /// The player listens to gossip and sees how people
     /// react to their flowers 
     /// </summary>
-    private IEnumerator AfternoonState(Coroutine currentCo)
+    private IEnumerator AfternoonState()
     {
         // Transition out of the shop 
+        Transition();
+        crowdManager.ResetCrowd(State);
 
         while (gameState == GameStates.afternoon)
         {
-
             // Allow player to move bouqets around and
             // interact slightly with the world 
+
+            if(crowdManager.IsFinished())
+            {
+                gameState = GameStates.evening;
+                break;
+            }
 
             yield return null;
         }
 
         // Cleanup
         currentCo = null;
-        StopCoroutine(currentCo);
     }
 
     /// <summary>
     /// The player has a brief dialogue with their partner 
     /// </summary>
-    private IEnumerator EveningState(Coroutine currentCo)
+    private IEnumerator EveningState()
     {
         // Transition into the house for dialogue 
+        Transition();
 
         while (gameState == GameStates.evening)
         {
+            // End dialogue 
 
             yield return null;
         }
@@ -138,6 +196,5 @@ public class GameManager : MonoBehaviour
 
         // Cleanup
         currentCo = null;
-        StopCoroutine(currentCo);
     }
 }
