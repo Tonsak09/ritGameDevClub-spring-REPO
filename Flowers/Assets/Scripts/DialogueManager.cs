@@ -62,7 +62,7 @@ public class DialogueManager : MonoBehaviour
         sign.GetComponentInChildren<TextMeshPro>().text = text;
 
         // Begins the coroutine 
-        StartCoroutine(SpawnSign(summoner, sign, lifeTime));
+        StartCoroutine(FixThatThing(StartCoroutine(SpawnSign(summoner, sign, lifeTime)), sign));
         StartCoroutine(stringAnimations.AnimateStringCo(sign, ySummonHeight, sign.GetComponent<LineRenderer>()));
     }
 
@@ -138,6 +138,17 @@ public class DialogueManager : MonoBehaviour
         
         // Destory once offscreen
         Destroy(sign.gameObject);
+    }
+
+    private IEnumerator FixThatThing(Coroutine watching, Transform summoner)
+    {
+        while (true)
+        {
+            if (summoner == null)
+            {
+                StopCoroutine(watching);
+            }
+        }
     }
 
     [System.Serializable]

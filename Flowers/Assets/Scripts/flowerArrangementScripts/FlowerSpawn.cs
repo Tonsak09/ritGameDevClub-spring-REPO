@@ -31,7 +31,6 @@ public class FlowerSpawn : MonoBehaviour
     }
     void Update()
     {
-        //flowersobjs= FindObjectsOfType<FlowerClass>();
         flowersobjs = GameObject.FindGameObjectsWithTag("flower");
         if(flowers != null)
         {

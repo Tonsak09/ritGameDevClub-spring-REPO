@@ -28,7 +28,7 @@ public class FlowerSelection : MonoBehaviour
     public bool wowBool { get; set; }
     [SerializeField] Camera cam;
     [SerializeField] private Material selMaterial;
-    int count = 1;
+    public int count = 1;
     Vector3 tempPos;
     public bool moveOn = false;
     float time, three;
@@ -56,6 +56,30 @@ public class FlowerSelection : MonoBehaviour
 
     void Update()
     {
+        for (int i = 0; i < bouquetOne.Count; i++)
+        {
+            if (bouquetOne[i] == null)
+            {
+                bouquetOne.RemoveAt(i);
+            }
+        }
+
+        for (int i = 0; i < bouquetTwo.Count; i++)
+        {
+            if (bouquetTwo[i] == null)
+            {
+                bouquetTwo.RemoveAt(i);
+            }
+        }
+
+        for (int i = 0; i < bouquetThree.Count; i++)
+        {
+            if (bouquetThree[i] == null)
+            {
+                bouquetThree.RemoveAt(i);
+            }
+        }
+
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
