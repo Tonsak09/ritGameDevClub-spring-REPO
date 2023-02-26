@@ -9,6 +9,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject dialogueSign;
     [SerializeField] float ySummonHeight;
     [SerializeField] float ySummonerOffset;
+    [SerializeField] StringAnimation stringAnimations;
 
     [Header("Animation Settings")]
     [SerializeField] float fallSpeed;
@@ -62,6 +63,7 @@ public class DialogueManager : MonoBehaviour
 
         // Begins the coroutine 
         StartCoroutine(SpawnSign(summoner, sign, lifeTime));
+        StartCoroutine(stringAnimations.AnimateStringCo(sign, ySummonHeight, sign.GetComponent<LineRenderer>()));
     }
 
     private IEnumerator SpawnSign(Transform summoner, Transform sign, float lifeTime)
@@ -143,14 +145,18 @@ public class DialogueManager : MonoBehaviour
     {
         [SerializeField] public int stringDetail;
         [SerializeField] public float stringWidth;
+        [SerializeField] Vector3 offset;
 
         private bool movingDown = true;
 
-        public IEnumerator AnimateStringCo(Transform target, LineRenderer lineRenderer)
+        public IEnumerator AnimateStringCo(Transform target, float ySummonHeight, LineRenderer lineRenderer)
         {
+            lineRenderer.SetWidth(stringWidth, stringWidth);
             while(target != null)
             {
-                if(movingDown)
+                lineRenderer.SetPositions(new Vector3[] { target.position + offset, new Vector3(target.position.x, ySummonHeight, target.position.z) });
+
+                /*if(movingDown)
                 {
                     // Bend string positively
                     for (int i = 0; i < stringDetail; i++)
@@ -162,7 +168,7 @@ public class DialogueManager : MonoBehaviour
                 {
                     // Bend string nagatively
 
-                }
+                }*/
 
                 yield return null; 
             }    
