@@ -25,6 +25,7 @@ public class FlowerSelection : MonoBehaviour
 
     public LayerMask flowerMask, wrapperMask, ribbonMask;
 
+    public bool wowBool = false;
     [SerializeField] Camera cam;
     [SerializeField] private Material selMaterial;
     int count = 1;
@@ -117,13 +118,18 @@ public class FlowerSelection : MonoBehaviour
             three = 0;
             time = 0;
         }
-        if (bouquetThree.Count>1&&three>4)
-        {
-            wowup = false;
-            wowdown = true;
-        }
+        if (bouquetThree.Count>1&&three>3)wowBool = true;
+        //{
+        //    wowup = false;
+        //    wowdown = true;
+        //}
         //transitising from picking->wrapping->ribbon between each bouquet
             flowerPick();
+        wowComplete();
+    }
+    public bool wowComplete()
+    {
+        return wowBool;
     }
     void moveBouquet(List<GameObject> bouquet)
     {
