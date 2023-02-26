@@ -11,14 +11,14 @@ public class MainCharacter : MonoBehaviour
     {
         for (int i = 0; i < liveParts.Count; i++)
         {
-            StartCoroutine(liveParts[i].Breathe());
+            StartAnimation(liveParts[i]);
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void StartAnimation(Live part)
     {
-        
+        StartCoroutine(part.Breathe());
+        StartCoroutine(part.Tilt());
     }
 
     [System.Serializable]
@@ -30,21 +30,38 @@ public class MainCharacter : MonoBehaviour
         [SerializeField] public float maxAngle;
         [SerializeField] public float tiltSpeed;
 
-        private float holdHeight;
+        private Vector3 holdPos;
+        private float holdZRot;
 
         public IEnumerator Breathe()
         {
             float timer = 0;
-            holdHeight = stand.position.y;
+            holdPos = stand.localPosition;
 
             while (true)
             {
-                stand.localPosition = Vector3.up * (holdHeight + (Mathf.Sin(timer * bobFrequency) * bobMag));
+                stand.localPosition = holdPos + Vector3.up * ((Mathf.Sin(timer * bobFrequency) * bobMag));
 
                 timer += Time.deltaTime;
                 yield return null;
             }
 
+        }
+
+        public IEnumerator Tilt()
+        {
+            float timer = 0;
+            holdZRot = stand.localEulerAngles.z;
+
+            print(holdZRot);
+
+            while (true)
+            {
+                stand.localEulerAngles = Vector3.forward * (holdZRot + (Mathf.Sin(timer) * maxAngle));
+
+                timer += Time.deltaTime * tiltSpeed;
+                yield return null;
+            }
         }
     }
 }

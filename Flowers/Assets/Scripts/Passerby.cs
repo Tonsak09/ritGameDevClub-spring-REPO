@@ -39,9 +39,9 @@ public class Passerby : MonoBehaviour
     /// <param name="startPos"></param>
     /// <param name="targetPos"></param>
     /// <param name="speed"></param>
-    public void MoveToTarget(Vector3 startPos, Vector3 targetPos, float speed, float bobSpeed, float bobMag)
+    public void MoveToTarget(Vector3 startPos, Vector3 targetPos, float speed, float bobSpeed, float bobMag, float maxAngle, float tiltSpeed)
     {
-        coroutines.Push(StartCoroutine(MovementCo(startPos, targetPos, speed, bobSpeed, bobMag)));
+        coroutines.Push(StartCoroutine(MovementCo(startPos, targetPos, speed, bobSpeed, bobMag, maxAngle, tiltSpeed)));
     }
 
     /// <summary>
@@ -57,12 +57,14 @@ public class Passerby : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    private IEnumerator MovementCo(Vector3 startPos, Vector3 targetPos, float entitySpeed, float frequency, float bobMag)
+    private IEnumerator MovementCo(Vector3 startPos, Vector3 targetPos, float entitySpeed, float frequency, float bobMag, float maxAngle, float tiltSpeed)
     {
         float lerp = 0;
         float bobTimer = 0;
 
         float holdHeight = standBase.position.y;
+
+        StartCoroutine(Tilt(holdHeight, standBase, maxAngle, tiltSpeed));
 
         while (lerp <= 1)
         {
@@ -80,6 +82,19 @@ public class Passerby : MonoBehaviour
         }
 
         reachedDestination = true;
+    }
+
+    public IEnumerator Tilt(float holdHeight, Transform stand, float maxAngle, float tiltSpeed)
+    {
+        float timer = 0;
+
+        while (true)
+        {
+            stand.localEulerAngles = Vector3.forward * (Mathf.Sin(timer) * maxAngle);
+
+            timer += Time.deltaTime * tiltSpeed;
+            yield return null;
+        }
     }
 
     /// <summary>

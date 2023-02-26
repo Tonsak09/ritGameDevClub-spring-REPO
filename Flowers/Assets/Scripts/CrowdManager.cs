@@ -20,6 +20,10 @@ public class CrowdManager : MonoBehaviour
     [SerializeField] float maxEntityBobFrequency;
     [SerializeField] float minEntityBobMag;
     [SerializeField] float maxEntityBobMag;
+    [SerializeField] float minEntityTiltAngle;
+    [SerializeField] float maxEntityTiltAngle;
+    [SerializeField] float minEntityTiltSpeed;
+    [SerializeField] float maxEntityTiltSpeed;
 
     [SerializeField] List<Passerby> entities;
     private GameManager gameManager;
@@ -96,6 +100,9 @@ public class CrowdManager : MonoBehaviour
             float bobFrequency = Random.Range(minEntityBobFrequency, maxEntityBobFrequency);
             float bobMag = Random.Range(minEntityBobMag, maxEntityBobMag);
 
+            float maxAngle = Random.Range(minEntityTiltAngle, maxEntityTiltAngle);
+            float tiltSpeed = Random.Range(minEntityTiltSpeed, maxEntityTiltSpeed);
+
             // Change the position to spawn eventually
             Vector3 startPos;
             Vector3 targetPos;
@@ -130,14 +137,14 @@ public class CrowdManager : MonoBehaviour
                 )
             );
 
-            StartCoroutine(BeginEntityMoveOnTimer(passerby, startPos, targetPos, speed, bobFrequency, bobMag, timeTillEntityMoves));
+            StartCoroutine(BeginEntityMoveOnTimer(passerby, startPos, targetPos, speed, bobFrequency, bobMag, timeTillEntityMoves, maxAngle, tiltSpeed));
         }
     }
 
-    private IEnumerator BeginEntityMoveOnTimer(Passerby entity, Vector3 start, Vector3 target, float speed, float bobSpeed, float bobMag, float timeTilMove)
+    private IEnumerator BeginEntityMoveOnTimer(Passerby entity, Vector3 start, Vector3 target, float speed, float bobSpeed, float bobMag, float timeTilMove, float maxAngle, float tiltSpeed)
     {
         yield return new WaitForSeconds(timeTilMove);
-        entity.MoveToTarget(start, target, speed, bobSpeed, bobMag);
+        entity.MoveToTarget(start, target, speed, bobSpeed, bobMag, maxAngle, tiltSpeed);
     }
 
     private void OnDrawGizmos()
