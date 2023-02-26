@@ -10,6 +10,8 @@ TagManager:
   - table
   - arrange
   - wow
+  - wrappers
+  - ribbons
   layers:
   - Default
   - TransparentFX

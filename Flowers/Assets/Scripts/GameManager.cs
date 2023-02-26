@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     private bool isOut; // whether in or out of shop
 
     [SerializeField] FlowerSelection flowerMovement;
+    [SerializeField] FlowerSpawn spawn;
 
     public enum GameStates
     {
@@ -141,6 +142,8 @@ public class GameManager : MonoBehaviour
             // Raycast choose 5 flowers per bouquet 
             if(flowerMovement.wowComplete())
             {
+                flowerMovement.wowBool=false;
+                spawn.count = 0;
                 gameState = GameStates.afternoon;
             }
 

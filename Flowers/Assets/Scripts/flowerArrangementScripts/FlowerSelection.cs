@@ -25,14 +25,14 @@ public class FlowerSelection : MonoBehaviour
 
     public LayerMask flowerMask, wrapperMask, ribbonMask;
 
-    public bool wowBool = false;
+    public bool wowBool { get; set; }
     [SerializeField] Camera cam;
     [SerializeField] private Material selMaterial;
     int count = 1;
     Vector3 tempPos;
     public bool moveOn = false;
     float time, three;
-
+    [SerializeField] FlowerSpawn spawn;
     public bool selectFlowers { get; set; }
 
     //get set stuff
@@ -50,7 +50,7 @@ public class FlowerSelection : MonoBehaviour
     private void Start()
     {
         flowerSelection = new List<GameObject>();
-
+        wowBool = false;
         selectFlowers = true;
     }
 
@@ -136,7 +136,12 @@ public class FlowerSelection : MonoBehaviour
             selectFlowers = true;
 
         }
-        if (bouquetThree.Count>1&&three>3)wowBool = true;
+        if (bouquetThree.Count > 1 && three > 3)
+        {
+            wowBool = true;
+            count = 1;
+        }
+
         //{
         //    wowup = false;
         //    wowdown = true;
@@ -144,6 +149,7 @@ public class FlowerSelection : MonoBehaviour
         //transitising from picking->wrapping->ribbon between each bouquet
             flowerPick();
         wowComplete();
+        spawn.spawned = false;
     }
     public bool wowComplete()
     {
@@ -153,8 +159,9 @@ public class FlowerSelection : MonoBehaviour
     {
         foreach(var item in bouquet)
         {
-            item.transform.position = Vector3.Lerp(item.transform.position, 
-                new Vector3(item.transform.position.x-5, item.transform.position.y, item.transform.position.z), 1 * Time.deltaTime);
+            if (item != null) {item.transform.position = Vector3.Lerp(item.transform.position, 
+                new Vector3(item.transform.position.x-5, item.transform.position.y, item.transform.position.z), 1 * Time.deltaTime); }
+            
         }
     }
     void presentFlowers(List<GameObject> bouquet)
@@ -167,8 +174,10 @@ public class FlowerSelection : MonoBehaviour
         }
         chosenWrap.transform.position = new Vector3(0, 1.5f, -1.6f);
         bouquet.Add(chosenWrap);
+        chosenWrap = null;
         chosenRib.transform.position = new Vector3(0, 1.5f, -1.6f);
         bouquet.Add(chosenRib);
+        chosenRib = null;
     }
         //spawning the bouquets in a row after selection
     void flowerPick()
@@ -217,8 +226,6 @@ public class FlowerSelection : MonoBehaviour
             tabdown = true;
             //once the bouquets flowers are selected, its time for the wrapping
             wrapleft = true;
-
-
         }
     }
 

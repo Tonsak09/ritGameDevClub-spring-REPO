@@ -27,7 +27,7 @@ public class Wrap_RibMovement : MonoBehaviour
     void move()
     {
         //WRAPPER
-        if (flower.wrapleft && transform.position != end && gameObject.tag=="wrapper")
+        if (flower.wrapleft && transform.position != end && gameObject.tag=="wrappers")
         {
             if(moveCo == null)
             {
@@ -41,7 +41,7 @@ public class Wrap_RibMovement : MonoBehaviour
         if (time > 2) { flower.wrapleft = false; time = 0; }
 
 
-        if (flower.wrapright && transform.position != start && gameObject.tag == "wrapper")
+        if (flower.wrapright && transform.position != start && gameObject.tag == "wrappers")
         {
             if (moveCo == null)
             {
@@ -56,7 +56,7 @@ public class Wrap_RibMovement : MonoBehaviour
 
 
         //RIBBON
-        if (flower.ribleft && transform.position != end && gameObject.tag == "ribbon")
+        if (flower.ribleft && transform.position != end && gameObject.tag == "ribbons")
         {
             if (moveCo == null)
             {
@@ -68,7 +68,7 @@ public class Wrap_RibMovement : MonoBehaviour
         { 
             flower.ribleft = false; time = 0; 
         }
-        if (flower.ribright && transform.position != start && gameObject.tag == "ribbon")
+        if (flower.ribright && transform.position != start && gameObject.tag == "ribbons")
         {
             if (moveCo == null)
             {

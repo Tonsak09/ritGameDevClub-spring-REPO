@@ -15,20 +15,63 @@ public class FlowerSpawn : MonoBehaviour
     //[SerializeField] List<Material> materials;
     GameObject temp, reference;
 
+    public bool spawned = false, itemSpawn= false;
+    public int count = 0;
     public List<GameObject> flowerObj;
-
+    [SerializeField] FlowerSelection flowerselection;
+    public GameObject[] flowersobjs;
     void Start()
     {
+        Spawn();   
         for (int b = 0; b < rows * (columns + 1) + 1; b++)
         {
             //int num = Random.Range(0, names.Count);
-            flowers.Add(null);
+            //flowers.Add(null);
         }
+    }
+    void Update()
+    {
+        //flowersobjs= FindObjectsOfType<FlowerClass>();
+        flowersobjs = GameObject.FindGameObjectsWithTag("flower");
+        if(flowers != null)
+        {
+            for (int i = 0; i < flowerObj.Count; i++)
+            {
+                flowerObj[i].transform.GetChild(0).GetComponent<Renderer>().material.SetTexture("_BaseMap", flowers[i].texture);
+            }
+        }
+        if (flowerselection.wowComplete()&&count==0)
+        {
+            spawned=true;
+        }
+        if (spawned) { 
+            flowerObj.Clear();
+            foreach (GameObject flower in flowersobjs) { Destroy(flower); }
+            //for(int a = 0; a < flowerObj.Count; a++) { flowerObj.RemoveAt(a); }
+            Spawn();
+            flowerselection.wowBool = false;
+            print(spawned);
+            spawned = false;
+            itemSpawn = true;
+            count++;
+        }
+        spawned = false;
+    }
+
+    [System.Serializable]
+    public class FlowerDetails
+    {
+        [SerializeField] public string name;
+        [SerializeField] public Texture2D texture;
+        [SerializeField] [Range(0, 2)] public int rarity;
+    }
+    void Spawn()
+    {
         for (int b = 0; b < rows; b++)
         {
             if (b == 0)
             {
-                temp = Instantiate(flowerShell, spawnPoint, Quaternion.identity); 
+                temp = Instantiate(flowerShell, spawnPoint, Quaternion.identity);
                 reference = temp;
 
                 flowerObj.Add(temp);
@@ -51,37 +94,6 @@ public class FlowerSpawn : MonoBehaviour
                 flowerObj.Add(temp);
             }
         }
-    }
-    void Update()
-    {
-        if(flowers != null)
-        {
-            /*flowerObj = FindObjectsOfType<FlowerClass>();
-            if(flowerObj != null)
-            {
-                for (int a = 0; a < flowerObj.Length; a++)
-                {
-                    *//*flowerObj[a].GetComponent<FlowerClass>().name = flowers[a].name;
-                    flowerObj[a].GetComponent<FlowerClass>().sprite = flowers[a].sprite;
-                    flowerObj[a].GetComponent<FlowerClass>().rarity = flowers[a].rarity;*//*
-
-                    flowerObj[a].GetComponent<Renderer>().material.SetTexture("_BaseMap", flowers[a].texture);
-                }
-            }*/
-
-            for (int i = 0; i < flowerObj.Count; i++)
-            {
-                flowerObj[i].transform.GetChild(0).GetComponent<Renderer>().material.SetTexture("_BaseMap", flowers[i].texture);
-            }
-        }
-    }
-
-    [System.Serializable]
-    public class FlowerDetails
-    {
-        [SerializeField] public string name;
-        [SerializeField] public Texture2D texture;
-        [SerializeField] [Range(0, 2)] public int rarity;
     }
 }
 

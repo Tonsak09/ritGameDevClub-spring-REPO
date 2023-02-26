@@ -14,18 +14,36 @@ public class WrapperSpawn : MonoBehaviour
 
     [SerializeField] List<ItemDetails> wrappers;
     [SerializeField] List<ItemDetails> ribbons;
+    [SerializeField] FlowerSpawn spawn;
 
+    public GameObject[] ribbon, wrapper;
     private int counter = 0;
 
     void Start()
     {
         spawnPoint = wrapperParent.transform.position;
+        SpawnItems();
+    }
+    private void Update()
+    {
+        ribbon = GameObject.FindGameObjectsWithTag("ribbon");
+        wrapper = GameObject.FindGameObjectsWithTag("wrapper");
+        if (spawn.itemSpawn)
+        {
+            foreach (GameObject thing in ribbon) { Destroy(thing); }
+            foreach (GameObject thing in wrapper) { Destroy(thing); }
+            SpawnItems();
+            spawn.itemSpawn = false;
+        }
+    }
+    void SpawnItems()
+    {
         //WRAPPER
         for (int b = 0; b < rows; b++)
         {
-            if (b == 0) 
-            { 
-                temp = Instantiate(wrapperPrefab, spawnPoint, Quaternion.identity, wrapperParent); 
+            if (b == 0)
+            {
+                temp = Instantiate(wrapperPrefab, spawnPoint, Quaternion.identity, wrapperParent);
                 reference = temp;
 
                 temp.transform.GetChild(0).GetComponent<Renderer>().material.SetTexture("_BaseMap", wrappers[counter].texture);
@@ -59,7 +77,7 @@ public class WrapperSpawn : MonoBehaviour
         {
             if (b == 0)
             {
-                temp = Instantiate(ribbonPrefab, spawnPoint, Quaternion.identity, ribbonParent); 
+                temp = Instantiate(ribbonPrefab, spawnPoint, Quaternion.identity, ribbonParent);
                 reference = temp;
 
                 temp.transform.GetChild(0).GetComponent<Renderer>().material.SetTexture("_BaseMap", ribbons[counter].texture);
@@ -84,9 +102,8 @@ public class WrapperSpawn : MonoBehaviour
                 counter++;
             }
         }
+        counter = 0;
     }
-
-
     [System.Serializable]
     public class ItemDetails
     {
