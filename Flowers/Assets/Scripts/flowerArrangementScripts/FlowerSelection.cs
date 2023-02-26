@@ -93,7 +93,7 @@ public class FlowerSelection : MonoBehaviour
                 var selRender = selection.GetComponent<Renderer>();
                 if (selection != null && selRender.tag == "ribbon")
                 {
-                    selRender.material = selMaterial;
+                    //selRender.material = selMaterial;
                 }
                 chosenRib = hit.collider.gameObject;
                 ribright = true;
@@ -103,12 +103,8 @@ public class FlowerSelection : MonoBehaviour
                 tabup = true;
                 arrangedown = true;
                 //show the finished bouquet here
-                chosenWrap.transform.parent = null;
-                chosenRib.transform.parent = null;
-                if(count == 2) { presentFlowers(bouquetOne); }
-                else if(count == 3) { presentFlowers(bouquetTwo); }
-                else { presentFlowers(bouquetThree); }
-                //time to pick the next bouquet
+                StartCoroutine(OrphanWrapAndRib(2)); // Orphan maker after 2 seconds 
+                
             }
         }
         if (moveOn)three+=Time.deltaTime;
@@ -203,6 +199,20 @@ public class FlowerSelection : MonoBehaviour
             wrapleft = true;
         }
     }
+
+    private IEnumerator OrphanWrapAndRib(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        chosenWrap.transform.parent = null;
+        chosenRib.transform.parent = null;
+
+        if (count == 2) { presentFlowers(bouquetOne); }
+        else if (count == 3) { presentFlowers(bouquetTwo); }
+        else { presentFlowers(bouquetThree); }
+        //time to pick the next bouquet
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawRay(cam.ScreenPointToRay(Input.mousePosition));

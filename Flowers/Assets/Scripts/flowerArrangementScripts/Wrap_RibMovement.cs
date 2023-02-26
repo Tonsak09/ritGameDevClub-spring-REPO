@@ -30,7 +30,8 @@ public class Wrap_RibMovement : MonoBehaviour
         {
             if(moveCo == null)
             {
-                moveCo = StartCoroutine(MoveToTarget(this.transform.position, end));
+                moveCo = StartCoroutine(MoveToTarget(start, end));
+                flower.wrapleft = false;
             }
 
             /*transform.position = Vector3.Lerp(transform.position, end, lerpTime * Time.deltaTime);
@@ -41,8 +42,14 @@ public class Wrap_RibMovement : MonoBehaviour
 
         if (flower.wrapright && transform.position != start && gameObject.tag == "wrapper")
         {
-            transform.position = Vector3.Lerp(transform.position, start, speed * Time.deltaTime);
-            time += Time.deltaTime;
+            if (moveCo == null)
+            {
+                moveCo = StartCoroutine(MoveToTarget(end, start));
+                flower.wrapright = false;
+            }
+
+            /*transform.position = Vector3.Lerp(transform.position, start, speed * Time.deltaTime);
+            time += Time.deltaTime;*/
         }
         if (time > 2) { flower.wrapright = false; time = 0; }
 
@@ -52,7 +59,8 @@ public class Wrap_RibMovement : MonoBehaviour
         {
             if (moveCo == null)
             {
-                moveCo = StartCoroutine(MoveToTarget(this.transform.position, end));
+                moveCo = StartCoroutine(MoveToTarget(start, end));
+                flower.ribleft = false; // Ihave no idea why this makes this work 
             }
         }
         if (time > 2) 
@@ -61,8 +69,14 @@ public class Wrap_RibMovement : MonoBehaviour
         }
         if (flower.ribright && transform.position != start && gameObject.tag == "ribbon")
         {
-            transform.position = Vector3.Lerp(transform.position, start, speed * Time.deltaTime);
-            time += Time.deltaTime;
+            if (moveCo == null)
+            {
+                moveCo = StartCoroutine(MoveToTarget(end, start));
+                flower.ribright = false;
+            }
+
+            /*transform.position = Vector3.Lerp(transform.position, start, speed * Time.deltaTime);
+            time += Time.deltaTime;*/
         }
         if (time > 2) { flower.ribright = false; time = 0; }
     }
@@ -79,6 +93,7 @@ public class Wrap_RibMovement : MonoBehaviour
             yield return null;
         }
 
+        moveCo = null;
         time = 3;
     }
 }

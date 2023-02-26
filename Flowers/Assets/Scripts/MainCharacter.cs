@@ -53,8 +53,6 @@ public class MainCharacter : MonoBehaviour
             float timer = 0;
             holdZRot = stand.localEulerAngles.z;
 
-            print(holdZRot);
-
             while (true)
             {
                 stand.localEulerAngles = Vector3.forward * (holdZRot + (Mathf.Sin(timer) * maxAngle));

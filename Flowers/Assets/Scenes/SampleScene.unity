@@ -282,6 +282,7 @@ MonoBehaviour:
   - {fileID: 782898765}
   - {fileID: 2072204628}
   - {fileID: 316804676}
+  - {fileID: 277367209}
   outCam: {fileID: 266675808}
   inCam: {fileID: 1593798555}
   flowerMovement: {fileID: 1218387496}
@@ -515,7 +516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a11691b7d9843a43a0bebd0ba0bf434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 0.5
   end: {x: -0.7, y: 1.6, z: -1.7}
   start: {x: 8.9, y: 1.6, z: -1.7}
   flower: {fileID: 330585550}
@@ -1079,6 +1080,7 @@ GameObject:
   m_Component:
   - component: {fileID: 277367207}
   - component: {fileID: 277367208}
+  - component: {fileID: 277367209}
   m_Layer: 0
   m_Name: Basil
   m_TagString: Untagged
@@ -1120,6 +1122,68 @@ MonoBehaviour:
     bobMag: 0.02
     maxAngle: 1
     tiltSpeed: 4
+--- !u!114 &277367209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277367206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8330fbad99cddaf4cbfffb96b4e6138c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetOffset: {x: 0.4, y: 0, z: -0.5}
+  speed: 1
+  curveOut:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  curveIn:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &316804674
 GameObject:
   m_ObjectHideFlags: 0
@@ -3263,7 +3327,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1269633962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3277,8 +3341,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lerpTime: 4
-  end: {x: 0.1, y: 1.7, z: -1.93}
-  start: {x: 0.1, y: 8.99, z: -1.93}
+  end: {x: 0.1, y: 1.7, z: -1.75}
+  start: {x: 0.1, y: 8.99, z: -1.75}
   flower: {fileID: 330585550}
   wowBool: 0
 --- !u!64 &1269633963
@@ -4460,9 +4524,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a11691b7d9843a43a0bebd0ba0bf434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  end: {x: -0.7, y: 1.6, z: -1.8}
-  start: {x: 8.9, y: 1.6, z: -1.8}
+  speed: 0.5
+  end: {x: -0.7, y: 1.6, z: -1.7}
+  start: {x: 8.9, y: 1.6, z: -1.7}
   flower: {fileID: 330585550}
 --- !u!4 &2071155912
 Transform:
@@ -4472,7 +4536,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2071155910}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.800001, y: 1.6, z: -1.8}
+  m_LocalPosition: {x: -7.800001, y: 1.6, z: -1.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
