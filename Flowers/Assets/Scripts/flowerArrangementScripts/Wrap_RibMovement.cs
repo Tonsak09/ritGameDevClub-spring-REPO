@@ -94,6 +94,12 @@ public class Wrap_RibMovement : MonoBehaviour
             yield return null;
         }
 
+        //print(this.transform.position.y - start.y);
+        //if(gameObject.tag == "ribbon" && Vector3.SqrMagnitude(this.transform.position - start) <= Mathf.Epsilon)
+        //{
+        //    flower.selectFlowers = true;
+        //}
+
         moveCo = null;
         time = 3;
     }

@@ -32,6 +32,9 @@ public class FlowerSelection : MonoBehaviour
     Vector3 tempPos;
     public bool moveOn = false;
     float time, three;
+
+    public bool selectFlowers { get; set; }
+
     //get set stuff
     public bool tmoveDown
     {
@@ -43,6 +46,14 @@ public class FlowerSelection : MonoBehaviour
         get { return tabup; }
         set { tabup = value; }
     }
+
+    private void Start()
+    {
+        flowerSelection = new List<GameObject>();
+
+        selectFlowers = true;
+    }
+
     void Update()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -55,7 +66,7 @@ public class FlowerSelection : MonoBehaviour
                 print(hit.collider.name);
             }
 
-            if (Physics.Raycast(ray, out hit, 10000, flowerMask) )
+            if (Physics.Raycast(ray, out hit, 10000, flowerMask) && selectFlowers)
             {
                 print("Flower is detected");
                 //adding to the list
@@ -68,6 +79,11 @@ public class FlowerSelection : MonoBehaviour
                 {
                     selRender.material = selMaterial;
                     selection.GetComponent<Collider>().enabled = false;
+                }
+
+                if(flowerSelection.Count >= 5)
+                {
+                    selectFlowers = false;
                 }
             }
             if (Physics.Raycast(ray, out hit, 10000, wrapperMask) &&!wrapleft)
@@ -117,6 +133,8 @@ public class FlowerSelection : MonoBehaviour
             moveOn = false;
             three = 0;
             time = 0;
+            selectFlowers = true;
+
         }
         if (bouquetThree.Count>1&&three>3)wowBool = true;
         //{
@@ -199,6 +217,8 @@ public class FlowerSelection : MonoBehaviour
             tabdown = true;
             //once the bouquets flowers are selected, its time for the wrapping
             wrapleft = true;
+
+
         }
     }
 
