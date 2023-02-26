@@ -10,6 +10,7 @@ public class CrowdManager : MonoBehaviour
     [SerializeField] int afternoonDensity;
     [SerializeField] int eveningDensity;
     [SerializeField] List<Vector3> passerbySpawnPositions;
+    [SerializeField] List<Texture2D> passerbyTextures;
     
     [Header("Entity Settings")]
     [SerializeField] float minTimeTillEntityMove;
@@ -125,7 +126,8 @@ public class CrowdManager : MonoBehaviour
             startPos += Vector3.forward * i * 0.015f;
 
             Passerby passerby = Instantiate(entity, startPos, Quaternion.identity).GetComponent<Passerby>();
-            
+            passerby.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.SetTexture("_BaseMap", passerbyTextures[Random.Range(0, passerbyTextures.Count)]);
+
             entities.Add(passerby);
 
             // Adds dialogue to the entity by getting it from the dialogue

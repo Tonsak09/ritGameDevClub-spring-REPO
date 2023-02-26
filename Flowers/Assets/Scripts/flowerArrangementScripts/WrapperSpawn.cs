@@ -29,6 +29,7 @@ public class WrapperSpawn : MonoBehaviour
                 reference = temp;
 
                 temp.transform.GetChild(0).GetComponent<Renderer>().material.SetTexture("_BaseMap", wrappers[counter].texture);
+                temp.transform.GetChild(1).GetComponent<Renderer>().material.SetTexture("_BaseMap", wrappers[counter].decalTexture);
                 counter++;
             }
             else
@@ -38,6 +39,7 @@ public class WrapperSpawn : MonoBehaviour
                 Quaternion.identity, wrapperParent);
 
                 temp.transform.GetChild(0).GetComponent<Renderer>().material.SetTexture("_BaseMap", wrappers[counter].texture);
+                temp.transform.GetChild(1).GetComponent<Renderer>().material.SetTexture("_BaseMap", wrappers[counter].decalTexture);
                 counter++;
 
             }
@@ -48,6 +50,7 @@ public class WrapperSpawn : MonoBehaviour
                     Quaternion.identity, wrapperParent);
 
                 temp.transform.GetChild(0).GetComponent<Renderer>().material.SetTexture("_BaseMap", wrappers[counter].texture);
+                temp.transform.GetChild(1).GetComponent<Renderer>().material.SetTexture("_BaseMap", wrappers[counter].decalTexture);
                 counter++;
             }
         }
@@ -92,5 +95,6 @@ public class WrapperSpawn : MonoBehaviour
     {
         [SerializeField] public string name;
         [SerializeField] public Texture2D texture;
+        [SerializeField] public Texture2D decalTexture;
     }
 }
