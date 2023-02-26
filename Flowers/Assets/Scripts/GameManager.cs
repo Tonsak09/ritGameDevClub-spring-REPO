@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     private int currentDay;
     private bool isOut; // whether in or out of shop
 
+    [SerializeField] Movement flowerMovement;
+
     public enum GameStates
     {
         morning,
@@ -137,7 +139,7 @@ public class GameManager : MonoBehaviour
         while (gameState == GameStates.morning)
         {
             // Raycast choose 5 flowers per bouquet 
-            if(Input.GetKeyDown(KeyCode.Space))
+            if(flowerMovement.wowComplete())
             {
                 gameState = GameStates.afternoon;
             }

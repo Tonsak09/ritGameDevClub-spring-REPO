@@ -10,6 +10,7 @@ public class Movement : MonoBehaviour
     //the ref and the timer
     public FlowerSelection flower;
     float time;
+    public bool wowBool = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,17 +23,46 @@ public class Movement : MonoBehaviour
     }
     void move()
     {
-        if (flower.tabmovedown&&transform.position!=end)
+        //TABLE
+        if (flower.tabdown&&transform.position!=end && gameObject.tag == "table")
+        {
+            transform.position = Vector3.Lerp(transform.position, end, lerpTime * Time.deltaTime);
+        }
+        if (flower.tabup&&transform.position!=start && gameObject.tag == "table")
+        {
+            transform.position = Vector3.Lerp(transform.position, start, lerpTime * Time.deltaTime);
+        }
+        //ARRANGEMENT SCREEN
+        if (flower.arrangedown && transform.position != end && gameObject.tag == "arrange")
         {
             transform.position = Vector3.Lerp(transform.position, end, lerpTime * Time.deltaTime);
             time += Time.deltaTime;
         }
-        if (time > 2) { flower.tabmovedown = false; time = 0; }
-        if (flower.tabmoveup&&transform.position!=start)
-        {
+        if (time > 3) { 
+            flower.arrangedown = false; 
+            flower.arrangeup = true; 
             transform.position = Vector3.Lerp(transform.position, start, lerpTime * Time.deltaTime);
-            time += Time.deltaTime;
         }
-        if (time > 2) { flower.tabmoveup = false; time = 0; }
+        if (time > 4) time = 0;
+        //WOW
+        if (flower.wowdown && transform.position != end && gameObject.tag == "wow"&&!wowBool)
+        {
+            transform.position = Vector3.Lerp(transform.position, end, lerpTime * Time.deltaTime);
+        }
+        if(flower.wowdown && transform.position != start && gameObject.tag == "wow")
+        {
+            time += Time.deltaTime;
+            //flower.wowdown = false;
+            wowBool = true;
+            if (time > 10)
+            {
+                transform.position = Vector3.Lerp(transform.position, start, lerpTime * Time.deltaTime);
+            }
+            if(time>11)time = 0;
+        }
+    }
+    public bool wowComplete()
+    {
+        return wowBool;
     }
 }

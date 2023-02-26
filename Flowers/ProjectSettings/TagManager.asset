@@ -7,6 +7,9 @@ TagManager:
   - flower
   - wrapper
   - ribbon
+  - table
+  - arrange
+  - wow
   layers:
   - Default
   - TransparentFX
