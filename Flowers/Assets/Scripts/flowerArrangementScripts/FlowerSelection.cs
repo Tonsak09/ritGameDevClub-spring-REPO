@@ -54,7 +54,7 @@ public class FlowerSelection : MonoBehaviour
                 print(hit.collider.name);
             }
 
-            if (Physics.Raycast(ray, out hit, 10000, flowerMask) &&!tabdown&&!arrangedown)
+            if (Physics.Raycast(ray, out hit, 10000, flowerMask) )
             {
                 print("Flower is detected");
                 //adding to the list
@@ -69,7 +69,7 @@ public class FlowerSelection : MonoBehaviour
                     selection.GetComponent<Collider>().enabled = false;
                 }
             }
-            if (Physics.Raycast(ray, out hit, 10000, wrapperMask) &&!wrapleft && !arrangedown)
+            if (Physics.Raycast(ray, out hit, 10000, wrapperMask) &&!wrapleft)
             {
                 //ONLY ONE WRAPPER CAN BE SELECTED
                 print("Wrapper is detected");
@@ -84,7 +84,7 @@ public class FlowerSelection : MonoBehaviour
                 wrapright = true;
                 ribleft = true;
             }
-            if (Physics.Raycast(ray, out hit, 10000, ribbonMask)&&!ribleft && !arrangedown)
+            if (Physics.Raycast(ray, out hit, 10000, ribbonMask)&&!ribleft )
             {
                 //ONLY ONE RIBBON CAN BE SELECTED
                 print("Ribbon is detected");
@@ -98,10 +98,6 @@ public class FlowerSelection : MonoBehaviour
                 chosenRib = hit.collider.gameObject;
                 ribright = true;
                 //arranging screen
-                arrangeup = false;
-                tabdown = false;
-                tabup = true;
-                arrangedown = true;
                 //show the finished bouquet here
                 StartCoroutine(OrphanWrapAndRib(2)); // Orphan maker after 2 seconds 
                 

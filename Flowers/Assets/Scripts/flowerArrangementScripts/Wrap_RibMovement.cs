@@ -6,6 +6,7 @@ public class Wrap_RibMovement : MonoBehaviour
 {
     [SerializeField][Range(0f, 4f)] float speed;
     [SerializeField] Vector3 end, start;
+    [SerializeField] AnimationCurve curve;
 
     //the ref and the timer
     public FlowerSelection flower;
