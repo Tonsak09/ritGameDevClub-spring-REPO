@@ -66,6 +66,7 @@ public class FlowerSelection : MonoBehaviour
                 if (selection != null && selRender.tag == "flower")
                 {
                     selRender.material = selMaterial;
+                    selection.GetComponent<Collider>().enabled = false;
                 }
             }
             if (Physics.Raycast(ray, out hit, 10000, wrapperMask) &&!wrapleft && !arrangedown)
@@ -77,7 +78,7 @@ public class FlowerSelection : MonoBehaviour
                 var selRender = selection.GetComponent<Renderer>();
                 if (selection != null && selRender.tag == "wrapper")
                 {
-                    selRender.material = selMaterial;
+                    //selRender.material = selMaterial;
                 }
                 chosenWrap = hit.collider.gameObject;
                 wrapright = true;

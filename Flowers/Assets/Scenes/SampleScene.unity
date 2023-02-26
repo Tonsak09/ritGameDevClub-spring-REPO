@@ -312,6 +312,10 @@ MonoBehaviour:
   maxEntityBobFrequency: 10
   minEntityBobMag: 0.01
   maxEntityBobMag: 0.02
+  minEntityTiltAngle: 5
+  maxEntityTiltAngle: 8
+  minEntityTiltSpeed: 2
+  maxEntityTiltSpeed: 5
   entities: []
 --- !u!114 &53921307
 MonoBehaviour:
@@ -511,7 +515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a11691b7d9843a43a0bebd0ba0bf434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerpTime: 4
+  speed: 1
   end: {x: -0.7, y: 1.6, z: -1.7}
   start: {x: 8.9, y: 1.6, z: -1.7}
   flower: {fileID: 330585550}
@@ -1114,8 +1118,8 @@ MonoBehaviour:
   - stand: {fileID: 1519433040}
     bobFrequency: 2
     bobMag: 0.02
-    maxAngle: 0
-    tiltSpeed: 0
+    maxAngle: 1
+    tiltSpeed: 4
 --- !u!1 &316804674
 GameObject:
   m_ObjectHideFlags: 0
@@ -1547,19 +1551,58 @@ MonoBehaviour:
   columns: 7
   spawnPoint: {x: 0.8, y: 1.7, z: -1.92}
   columnDis: -0.3
-  rowDis: 0.7
-  names:
-  - Rose
-  - Daisy
-  prefab: {fileID: 7829197857958008744, guid: b50e7d9d2e8ba7445925a343ca992d33, type: 3}
-  flowers: []
-  rarities:
-  - Uncommon
-  - Common
-  - Exotic
-  materials:
-  - {fileID: 0}
-  - {fileID: 0}
+  rowDis: 0.5
+  flowerShell: {fileID: 7829197857958008744, guid: b50e7d9d2e8ba7445925a343ca992d33,
+    type: 3}
+  flowers:
+  - name: Rose
+    texture: {fileID: 2800000, guid: fd7e6430020341c4ca480579e198377f, type: 3}
+    rarity: 0
+  - name: Leaf
+    texture: {fileID: 2800000, guid: bfb5ede7aa36f5642820179e48897c8a, type: 3}
+    rarity: 0
+  - name: Rose
+    texture: {fileID: 2800000, guid: fd7e6430020341c4ca480579e198377f, type: 3}
+    rarity: 0
+  - name: Rose
+    texture: {fileID: 2800000, guid: fd7e6430020341c4ca480579e198377f, type: 3}
+    rarity: 0
+  - name: Tiger Lily
+    texture: {fileID: 2800000, guid: 2ef8293d858e2dd4ca5fcce61ec57a0b, type: 3}
+    rarity: 2
+  - name: Tiger Lily
+    texture: {fileID: 2800000, guid: 2ef8293d858e2dd4ca5fcce61ec57a0b, type: 3}
+    rarity: 2
+  - name: Poppy
+    texture: {fileID: 2800000, guid: a89118877b181ae46bd4b59df207efb9, type: 3}
+    rarity: 1
+  - name: Poppy
+    texture: {fileID: 2800000, guid: a89118877b181ae46bd4b59df207efb9, type: 3}
+    rarity: 1
+  - name: Leaves
+    texture: {fileID: 2800000, guid: bfb5ede7aa36f5642820179e48897c8a, type: 3}
+    rarity: 0
+  - name: Leaves
+    texture: {fileID: 2800000, guid: bfb5ede7aa36f5642820179e48897c8a, type: 3}
+    rarity: 0
+  - name: Calla Lily
+    texture: {fileID: 2800000, guid: d5ef8c9ed46b28e49b9e13d7c4ad8295, type: 3}
+    rarity: 1
+  - name: Calla Lily
+    texture: {fileID: 2800000, guid: d5ef8c9ed46b28e49b9e13d7c4ad8295, type: 3}
+    rarity: 1
+  - name: QueenAnne
+    texture: {fileID: 2800000, guid: b956f7caa95e5b242b33b4a21ce51c52, type: 3}
+    rarity: 2
+  - name: QueenAnne
+    texture: {fileID: 2800000, guid: b956f7caa95e5b242b33b4a21ce51c52, type: 3}
+    rarity: 2
+  - name: Tulip
+    texture: {fileID: 2800000, guid: 42e170e112f64694abe5797f296dcb26, type: 3}
+    rarity: 0
+  - name: Tulip
+    texture: {fileID: 2800000, guid: 42e170e112f64694abe5797f296dcb26, type: 3}
+    rarity: 0
   flowerObj: []
 --- !u!114 &330585550
 MonoBehaviour:
@@ -1611,7 +1654,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98550b9eb974eb94984160e5bf1633a0, type: 3}
   m_Name: 
@@ -2667,6 +2710,7 @@ MonoBehaviour:
   end: {x: 0.1, y: 1.7, z: -1.73}
   start: {x: 0.1, y: 8.99, z: -1.73}
   flower: {fileID: 330585550}
+  wowBool: 0
 --- !u!64 &1033066481
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3077,6 +3121,7 @@ MonoBehaviour:
   end: {x: 0.1, y: 1.7, z: -1.43}
   start: {x: 0.1, y: 8.99, z: -1.43}
   flower: {fileID: 330585550}
+  wowBool: 0
 --- !u!64 &1218387497
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3235,6 +3280,7 @@ MonoBehaviour:
   end: {x: 0.1, y: 1.7, z: -1.93}
   start: {x: 0.1, y: 8.99, z: -1.93}
   flower: {fileID: 330585550}
+  wowBool: 0
 --- !u!64 &1269633963
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4414,7 +4460,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a11691b7d9843a43a0bebd0ba0bf434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lerpTime: 4
+  speed: 1
   end: {x: -0.7, y: 1.6, z: -1.8}
   start: {x: 8.9, y: 1.6, z: -1.8}
   flower: {fileID: 330585550}
