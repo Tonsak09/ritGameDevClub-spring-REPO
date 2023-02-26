@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     private int currentDay;
     private bool isOut; // whether in or out of shop
 
-    [SerializeField] Movement flowerMovement;
+    [SerializeField] FlowerSelection flowerMovement;
 
     public enum GameStates
     {
