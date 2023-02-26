@@ -133,9 +133,41 @@ public class DialogueManager : MonoBehaviour
             lerp += Time.deltaTime * recallSpeed;
             yield return null;
         }
-
+        
         // Destory once offscreen
         Destroy(sign.gameObject);
+    }
+
+    [System.Serializable]
+    public class StringAnimation
+    {
+        [SerializeField] public int stringDetail;
+        [SerializeField] public float stringWidth;
+
+        private bool movingDown = true;
+
+        public IEnumerator AnimateStringCo(Transform target, LineRenderer lineRenderer)
+        {
+            while(target != null)
+            {
+                if(movingDown)
+                {
+                    // Bend string positively
+                    for (int i = 0; i < stringDetail; i++)
+                    {
+
+                    }
+                }
+                else
+                {
+                    // Bend string nagatively
+
+                }
+
+                yield return null; 
+            }    
+        }
+
     }
 
     [System.Serializable]
