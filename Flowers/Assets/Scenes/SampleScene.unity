@@ -286,7 +286,7 @@ MonoBehaviour:
   - {fileID: 759138553}
   outCam: {fileID: 266675808}
   inCam: {fileID: 1593798555}
-  flowerMovement: {fileID: 1218387496}
+  flowerMovement: {fileID: 330585550}
 --- !u!114 &53921306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -518,8 +518,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.5
-  end: {x: 0, y: 1.6, z: -1.7}
-  start: {x: 0, y: 6, z: -1.7}
+  end: {x: 0, y: 1.6, z: -1.6}
+  start: {x: 0, y: 6, z: -1.6}
   curve:
     serializedVersion: 2
     m_Curve:
@@ -553,7 +553,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 55615723}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 6, z: -1.7}
+  m_LocalPosition: {x: -7.800001, y: 1.6, z: -1.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1733,6 +1733,7 @@ MonoBehaviour:
   ribbonMask:
     serializedVersion: 2
     m_Bits: 256
+  wowBool: 0
   cam: {fileID: 330585545}
   selMaterial: {fileID: 2100000, guid: afe6f94784170414686d507e7d424cb1, type: 2}
   moveOn: 0
