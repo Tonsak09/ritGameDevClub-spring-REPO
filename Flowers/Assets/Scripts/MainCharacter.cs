@@ -31,7 +31,7 @@ public class MainCharacter : MonoBehaviour
         [SerializeField] public float tiltSpeed;
 
         private Vector3 holdPos;
-        private float holdZRot;
+        private Vector3 holdRot;
 
         public IEnumerator Breathe()
         {
@@ -51,11 +51,11 @@ public class MainCharacter : MonoBehaviour
         public IEnumerator Tilt()
         {
             float timer = 0;
-            holdZRot = stand.localEulerAngles.z;
+            holdRot = stand.localEulerAngles;
 
             while (true)
             {
-                stand.localEulerAngles = Vector3.forward * (holdZRot + (Mathf.Sin(timer) * maxAngle));
+                stand.localEulerAngles = holdRot + Vector3.forward * ((Mathf.Sin(timer) * maxAngle));
 
                 timer += Time.deltaTime * tiltSpeed;
                 yield return null;

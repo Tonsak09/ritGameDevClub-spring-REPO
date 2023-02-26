@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 7829197857958008747}
   - component: {fileID: -550327313176105611}
   - component: {fileID: 3556921877611688782}
+  - component: {fileID: 319795231249886734}
   m_Layer: 6
   m_Name: Flower
   m_TagString: flower
@@ -216,3 +217,21 @@ MonoBehaviour:
   name: 
   sprite: {fileID: 0}
   rarity: 
+--- !u!114 &319795231249886734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7829197857958008744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bc1d1cf9c6ad974fba1158bde7bc4a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  liveParts:
+  - stand: {fileID: 460917841956727140}
+    bobFrequency: 4
+    bobMag: 0.05
+    maxAngle: 2
+    tiltSpeed: 6
