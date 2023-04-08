@@ -34,16 +34,6 @@ public class DialogueManager : MonoBehaviour
         common
     }
 
-    private void Update()
-    {
-        /*// Testing 
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            SummonFallingDialogue("Test", this.transform, 2.0f);
-        }*/
-    }
-
-
     /// <summary>
     /// Summons a sign above the summoner and follows 
     /// the summoners xz coordinates but not y pos
@@ -81,7 +71,6 @@ public class DialogueManager : MonoBehaviour
                 Mathf.LerpUnclamped(ySummonHeight, heightTarget, fallCurve.Evaluate(lerp)),
                 summoner.position.z
                 );
-
 
             lerp += Time.deltaTime * fallSpeed;
             yield return null;

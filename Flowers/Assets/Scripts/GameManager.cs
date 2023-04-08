@@ -14,8 +14,22 @@ public class GameManager : MonoBehaviour
     [Tooltip("This camera is used on the insdie of the shop")]
     [SerializeField] GameObject inCam;
 
+    [Header("Morning")]
+    [SerializeField] Camera cam;
+    [SerializeField] int flowersPerBouqet;
+    [SerializeField] int numOfBouqets;
+
+
+    //[Header("Afternoon")]
+    //[Header("Evening")]
+
+    [Header("Gizmos")]
+    [SerializeField] Color raycastColor;
+    [SerializeField] Color raycastHitColor;
+    [SerializeField] float raycastHitRadius;
+
     public GameStates State { get { return gameState; } }
-    public Days CurrentDay {  get { return day; } }
+    public Days CurrentDay { get { return day; } }
 
     private CrowdManager crowdManager;
 
@@ -24,8 +38,8 @@ public class GameManager : MonoBehaviour
     private int currentDay;
     private bool isOut; // whether in or out of shop
 
-    [SerializeField] FlowerSelection flowerMovement;
-    [SerializeField] FlowerSpawn spawn;
+    private List<Flower> currentFlowers;
+    private List<Boqouet> currentBoqouets;
 
     public enum GameStates
     {
@@ -54,14 +68,10 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StateMachine());
     }
 
-    private void Update()
-    {
-        /*if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Transition();
-        }*/
-    }
-
+    /// <summary>
+    /// Go through each object that can transition and
+    /// activate them 
+    /// </summary>
     private void Transition()
     {
         for (int i = 0; i < transitionals.Count; i++)
@@ -70,7 +80,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Transition the camera 
-        if(isOut)
+        if (isOut)
         {
             inCam.SetActive(true);
             outCam.SetActive(false);
@@ -84,18 +94,32 @@ public class GameManager : MonoBehaviour
         isOut = !isOut;
     }
 
+    /// <summary>
+    /// Adds a flower to the games current list 
+    /// </summary>
+    /// <param name="flower"></param>
+    public void AddFlower(Flower flower)
+    {
+        if (currentFlowers == null)
+        {
+            currentFlowers = new List<Flower>();
+        }
+
+        currentFlowers.Add(flower);
+    }
+
     private IEnumerator StateMachine()
     {
 
         // Repeats for each day of week 
-        while(currentDay < 7)
+        while (currentDay < 7)
         {
             // Swaps based on day 
             switch (gameState)
             {
                 case GameStates.morning:
 
-                    if(currentCo == null)
+                    if (currentCo == null)
                     {
                         currentCo = StartCoroutine(MorningState());
                     }
@@ -137,14 +161,43 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         Transition();
 
+        // Spawn the flowers before moving on 
+        yield return SpawnItems();
+
         while (gameState == GameStates.morning)
         {
-            // Raycast choose 5 flowers per bouquet 
-            if(flowerMovement.wowComplete())
+            // Spawn Flowers
+
+            // When to continue to afternoon
+            if (currentBoqouets.Count == numOfBouqets)
             {
-                flowerMovement.wowBool=false;
-                spawn.count = 0;
                 gameState = GameStates.afternoon;
+            }
+
+            // Add to boqouets
+            if (currentFlowers.Count == flowersPerBouqet)
+            {
+                currentBoqouets.Add(new Boqouet(currentFlowers));
+                currentFlowers = new List<Flower>();
+            }
+
+            RaycastHit hit;
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                // Something is hit 
+                if (hit.collider.tag == "Clickable")
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        // ClickableFlower will automatically add to the current flowers list 
+
+                        // Activate its click event 
+                        Clickable currentlyClicked = hit.collider.GetComponent<Clickable>();
+                        currentlyClicked.Click();
+                    }
+                }
             }
 
             yield return null;
@@ -169,7 +222,7 @@ public class GameManager : MonoBehaviour
             // Allow player to move bouqets around and
             // interact slightly with the world 
 
-            if(crowdManager.IsFinished())
+            if (crowdManager.IsFinished())
             {
                 gameState = GameStates.evening;
                 break;
@@ -201,5 +254,48 @@ public class GameManager : MonoBehaviour
 
         // Cleanup
         currentCo = null;
+    }
+
+
+    private IEnumerator SpawnItems(List<GameObject> gameObjects, float pauseBetweenSpawn, float summonSpeed)
+    {
+        for (int i = 0; i < gameObjects.Count; i++)
+        {
+            StartCoroutine(Summon(gameObjects[i], gameObjects[i].GetComponent<LineRenderer>(), summonSpeed));
+            yield return new WaitForSeconds(pauseBetweenSpawn);
+        }
+    }
+
+    private IEnumerator Summon(GameObject gameObject, LineRenderer line, float summonSpeed)
+    {
+        float lerp = 0;
+        while(lerp <= 1)
+        {
+            lerp += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        RaycastHit hit;
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+        if(Physics.Raycast(ray, out hit))
+        {
+            if(hit.collider.tag == "Clickable")
+            {
+                Gizmos.color = raycastHitColor;
+            }
+
+            Gizmos.DrawSphere(hit.point, raycastHitRadius);
+            Gizmos.DrawLine(cam.transform.position, hit.point);
+        }
+        else
+        {
+            Gizmos.color = raycastColor;
+
+            Gizmos.DrawLine(cam.transform.position, ray.direction * 5.0f);
+        }
     }
 }

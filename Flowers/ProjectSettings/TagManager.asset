@@ -12,6 +12,7 @@ TagManager:
   - wow
   - wrappers
   - ribbons
+  - Clickable
   layers:
   - Default
   - TransparentFX
