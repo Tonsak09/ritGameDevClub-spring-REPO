@@ -14,10 +14,24 @@ public class GameManager : MonoBehaviour
     [Tooltip("This camera is used on the insdie of the shop")]
     [SerializeField] GameObject inCam;
 
+
+
     [Header("Morning")]
     [SerializeField] Camera cam;
+
+    [Space]
+    [SerializeField] List<GameObject> flowers;
+    [SerializeField] int flowerGridWidth;
+    [SerializeField] int flowerGridHeight;
     [SerializeField] int flowersPerBouqet;
     [SerializeField] int numOfBouqets;
+
+    [Space]
+    [SerializeField] float pauseBetweenSummon;
+    [SerializeField] float summonSpeed;
+    [SerializeField] float ySummonHeight;
+    [SerializeField] float ySummonerOffset;
+    [SerializeField] StringAnimation stringAnimations;
 
 
     //[Header("Afternoon")]
@@ -161,13 +175,22 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1);
         Transition();
 
+        // A list where each object has a flower class 
+        List<GameObject> flowerList = new List<GameObject>();
+
+        for (int x = 0; x < flowerGridWidth; x++)
+        {
+            for (int y = 0; y < flowerGridHeight; y++)
+            {
+                flowerList.Add(Instantiate(flowers[x + y * flowerGridWidth]));
+            }
+        }
+
         // Spawn the flowers before moving on 
-        yield return SpawnItems();
+        yield return SpawnItems(flowerList, pauseBetweenSummon, summonSpeed);
 
         while (gameState == GameStates.morning)
         {
-            // Spawn Flowers
-
             // When to continue to afternoon
             if (currentBoqouets.Count == numOfBouqets)
             {
@@ -256,16 +279,23 @@ public class GameManager : MonoBehaviour
         currentCo = null;
     }
 
-
-    private IEnumerator SpawnItems(List<GameObject> gameObjects, float pauseBetweenSpawn, float summonSpeed)
+    /// <summary>
+    /// Bring a list of items into the scene 
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator SpawnItems(List<GameObject> items, float pauseBetweenSpawn, float summonSpeed)
     {
-        for (int i = 0; i < gameObjects.Count; i++)
+        for (int i = 0; i < items.Count; i++)
         {
-            StartCoroutine(Summon(gameObjects[i], gameObjects[i].GetComponent<LineRenderer>(), summonSpeed));
+            StartCoroutine(Summon(items[i], items[i].GetComponent<LineRenderer>(), summonSpeed));
             yield return new WaitForSeconds(pauseBetweenSpawn);
         }
     }
 
+    /// <summary>
+    /// Brings the object down towards a set target 
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator Summon(GameObject gameObject, LineRenderer line, float summonSpeed)
     {
         float lerp = 0;
@@ -274,6 +304,28 @@ public class GameManager : MonoBehaviour
             lerp += Time.deltaTime;
             yield return null;
         }
+    }
+
+    [System.Serializable]
+    public class StringAnimation
+    {
+        [SerializeField] public int stringDetail;
+        [SerializeField] public float stringWidth;
+        [SerializeField] Vector3 offset;
+
+        private bool movingDown = true;
+
+        public IEnumerator AnimateStringCo(Transform target, float ySummonHeight, LineRenderer lineRenderer)
+        {
+            lineRenderer.SetWidth(stringWidth, stringWidth);
+            while (target != null)
+            {
+                lineRenderer.SetPositions(new Vector3[] { target.position + offset, new Vector3(target.position.x, ySummonHeight, target.position.z) });
+
+                yield return null;
+            }
+        }
+
     }
 
     private void OnDrawGizmos()
